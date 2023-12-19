@@ -14,7 +14,11 @@ class Evaluation(ABC):
     
 
 class accuracy(Evaluation):
-    """This class represents a R2_Score object."""
+    """This class represents a R2_Score object.
+        Args:
+            y_true: Ground truth (correct) target values.
+            y_pred: Estimated target values.
+    """
     
     def evaluate(self, y_true:np.ndarray, y_pred:np.ndarray):
         """This method evaluates the performance of a model."""
@@ -32,7 +36,13 @@ class MSE(Evaluation):
     """This class represents a MSE object."""
     
     def evaluate(self, y_true:np.ndarray, y_pred:np.ndarray):
-        """This method evaluates the performance of a model."""
+        """This method evaluates the performance of a model.
+        
+        Args:
+            y_true: Ground truth (correct) target values.
+            y_pred: Estimated target values.
+        
+        """
         
         try:
             logging.info("Evaluating MSE of the model...")
@@ -47,7 +57,11 @@ class RMSE(Evaluation):
     """This class represents a RMSE object."""
     
     def evaluate(self, y_true:np.ndarray, y_pred:np.ndarray):
-        """This method evaluates the performance of a model."""
+        """This method evaluates the performance of a model.
+            Args:
+                y_true: Ground truth (correct) target values.
+                y_pred: Estimated target values.
+        """
         
         try:
             logging.info("Evaluating RMSE of the model...")

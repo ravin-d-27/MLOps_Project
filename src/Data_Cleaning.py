@@ -22,6 +22,11 @@ class DataPreprocessing(DataStrategy):
     
     def handle_data(self, data: pd.DataFrame)->pd.DataFrame:
         
+        """This method preprocesses the data.
+        Args:
+            data: Pandas DataFrame.
+        """
+        
         try:
             logging.info("Starting Data Preprocessing")
             label_encoder = LabelEncoder()
@@ -40,7 +45,14 @@ class DataSplitting_XandY(DataStrategy):
     """Concrete class for data Split for X and y strategy."""
     
     def handle_data(self, data: pd.DataFrame)->Tuple[pd.DataFrame, pd.Series]:
+        """This method splits the data into X and y.
         
+        Args:
+            data: Pandas DataFrame.
+        Returns:
+            X: Pandas DataFrame.
+            y: Pandas Series.
+        """
         try:
             logging.info("Starting Data Splitting")
             X = data.drop(['Survived'], axis=1)
@@ -56,13 +68,23 @@ class Data_train_test(DataStrategy):
     """Concrete class for data train test split strategy."""
     
     def handle_data(self, X: pd.DataFrame, y:pd.Series)->Tuple[pd.DataFrame,pd.DataFrame,pd.Series,pd.Series]:
+        """
+        This method handles the data by splitting it into training and testing sets.
+        
+        Parameters:
+            X (pd.DataFrame): The input features.
+            y (pd.Series): The target variable.
+            
+        Returns:
+            Tuple[pd.DataFrame,pd.DataFrame,pd.Series,pd.Series]: A tuple containing the training and testing sets of X and y.
+        """
         
         try:
             logging.info("Starting Data Splitting for training and testing")
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
             logging.info("Data Splitting for training and testing is successful.")
             return X_train, X_test, y_train, y_test
-        
+
         except Exception as e:
             logging.error("Data Splitting for training and testing is failed.")
             raise e

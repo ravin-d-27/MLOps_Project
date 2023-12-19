@@ -7,6 +7,11 @@ import pandas as pd
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     Data cleaning step.
+    
+    Args:
+        df: Pandas DataFrame.
+    Returns:
+        df: Pandas DataFrame.
     """
     try:
         logging.info("Starting Data Cleaning")

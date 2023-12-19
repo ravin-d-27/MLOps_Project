@@ -7,7 +7,14 @@ from sklearn.base import ClassifierMixin
 
 @step
 def model_eval(X_test:pd.DataFrame, y_true: pd.DataFrame, model: ClassifierMixin)->None:
-    """This step evaluates the performance of a model."""
+    """This step evaluates the performance of a model.
+        Args:
+            X_test: Pandas DataFrame.
+            y_true: Pandas DataFrame.
+            model: Trained model.
+        Returns:
+            None
+    """
     
     try:
         logging.info("Evaluating model...")

@@ -8,6 +8,10 @@ from typing import Tuple
 def split_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series]:
     """
     Data cleaning step.
+    Args:
+        df: Pandas DataFrame.
+    Returns:
+        pd.DataFrame, pd.Series
     """
     try:
         logging.info("Starting Data Splitting into X and Y")

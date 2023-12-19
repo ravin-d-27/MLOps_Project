@@ -8,6 +8,12 @@ from typing import Tuple
 def train_and_test_split(X: pd.DataFrame, y: pd.Series) -> Tuple[pd.DataFrame,pd.DataFrame,pd.Series,pd.Series]:
     """
     Data cleaning step.
+    
+    Args:
+        X: Pandas DataFrame.
+        y: Pandas Series.
+    Returns:
+        pd.DataFrame, pd.DataFrame, pd.Series, pd.Series
     """
     try:
         logging.info("Starting Data Splitting into train and test")

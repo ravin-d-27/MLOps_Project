@@ -5,11 +5,15 @@ import pandas as pd
 
 from sklearn.base import ClassifierMixin
 
-from sklearn.preprocessing import LabelEncoder
-
 @step
 def train_model(X_train:pd.DataFrame, y_train:pd.Series) -> ClassifierMixin:
-    """Train the model."""
+    """Train the model.
+        Args:
+            X_train: Pandas DataFrame.
+            y_train: Pandas Series.
+        Returns:
+            model: Trained model.
+    """
     try:
         logging.info("Starting Model Training")
         

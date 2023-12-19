@@ -14,6 +14,12 @@ class IngestData:
     
 @step
 def run(data_path: str) -> pd.DataFrame:
+    """Ingest data step.
+    Args:
+        data_path: Path to the data.
+    Returns:
+        df: Pandas DataFrame.
+    """
     try:
         logging.info("Starting Data ingestion.")
         ingest = IngestData(data_path)
