@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from typing import Tuple
 
 from sklearn.model_selection import train_test_split
-
+from sklearn.preprocessing import LabelEncoder
 
 class DataStrategy(ABC):
     """Abstract class for data ingestion strategy."""
@@ -24,7 +24,12 @@ class DataPreprocessing(DataStrategy):
         
         try:
             logging.info("Starting Data Preprocessing")
-            data = data.drop(['PassengerId','Name','Ticket','Cabin'], axis=1)
+            label_encoder = LabelEncoder()
+            data = data.drop(['PassengerId', 'Name', 'Ticket', 'Cabin','Embarked'], axis=1)
+            data['Sex'] = label_encoder.fit_transform(data['Sex'])
+            data = data.drop(columns=['Sex'])
+            data["Age"].fillna(data["Age"].mean(), inplace=True)
+            data["Fare"].fillna(data["Fare"].mean(), inplace=True)
             logging.info("Data Preprocessing is successful.")
             return data            
         except Exception as e:

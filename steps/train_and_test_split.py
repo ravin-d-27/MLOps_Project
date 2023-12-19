@@ -11,7 +11,7 @@ def train_and_test_split(X: pd.DataFrame, y: pd.Series) -> Tuple[pd.DataFrame,pd
     """
     try:
         logging.info("Starting Data Splitting into train and test")
-        data_preprocessing = Data_train_test(DataStrategy)
+        data_preprocessing = Data_train_test()
         X_train, X_test, y_train, y_test = data_preprocessing.handle_data(X,y)
         logging.info("Data Splitting of train and test is successful.")
         return X_train, X_test, y_train, y_test          

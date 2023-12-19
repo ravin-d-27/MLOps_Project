@@ -11,7 +11,7 @@ def split_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series]:
     """
     try:
         logging.info("Starting Data Splitting into X and Y")
-        data_preprocessing = DataSplitting_XandY(DataStrategy)
+        data_preprocessing = DataSplitting_XandY()
         X,y = data_preprocessing.handle_data(df)
         logging.info("Data Splitting os X and y is successful.")
         return X,y          
