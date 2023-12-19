@@ -1,4 +1,4 @@
-from src.Evaluation import R2_Score, MSE, RMSE
+from src.Evaluation import accuracy, MSE, RMSE
 import logging
 from zenml import step
 import numpy as np
@@ -14,8 +14,8 @@ def model_eval(X_test:pd.DataFrame, y_true: pd.DataFrame, model: ClassifierMixin
         
         y_pred = model.predict(X_test)
         
-        r2_score = R2_Score()
-        r2_score.evaluate(y_true, y_pred)
+        acc = accuracy()
+        acc.evaluate(y_true, y_pred)
         
         mse = MSE()
         mse.evaluate(y_true, y_pred)
@@ -24,7 +24,7 @@ def model_eval(X_test:pd.DataFrame, y_true: pd.DataFrame, model: ClassifierMixin
         rmse.evaluate(y_true, y_pred)
         
         logging.info("Evaluation complete!")
-        logging.info("R2 Score: {}".format(r2_score))
+        logging.info("Accuracy Score: {}".format(acc))
         logging.info("MSE: {}".format(mse))
         logging.info("RMSE: {}".format(rmse))
         

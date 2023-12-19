@@ -1,5 +1,5 @@
 import logging
-from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.metrics import accuracy_score, mean_squared_error
 import numpy as np
 from abc import ABC, abstractmethod
 
@@ -13,7 +13,7 @@ class Evaluation(ABC):
         pass
     
 
-class R2_Score(Evaluation):
+class accuracy(Evaluation):
     """This class represents a R2_Score object."""
     
     def evaluate(self, y_true:np.ndarray, y_pred:np.ndarray):
@@ -21,8 +21,8 @@ class R2_Score(Evaluation):
         
         try:
             logging.info("Evaluating R2 Score of the model...")
-            score = r2_score(y_true, y_pred)
-            logging.info("R2 Score: {}".format(score))
+            score = accuracy_score(y_true, y_pred)
+            logging.info("Accuracy Score: {}".format(score))
             return score
         except Exception as e:
             logging.error("Error while evaluating R2 Score of the model: {}".format(e))
