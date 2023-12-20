@@ -5,7 +5,12 @@ import numpy as np
 import pandas as pd
 from sklearn.base import ClassifierMixin
 
-@step
+import mlflow
+from zenml.client import Client
+
+experiment_tracker = Client().active_stack.experiment_tracker
+
+@step(experiment_tracker=experiment_tracker.name)
 def model_eval(X_test:pd.DataFrame, y_true: pd.DataFrame, model: ClassifierMixin)->None:
     """This step evaluates the performance of a model.
         Args:
@@ -22,13 +27,16 @@ def model_eval(X_test:pd.DataFrame, y_true: pd.DataFrame, model: ClassifierMixin
         y_pred = model.predict(X_test)
         
         acc = accuracy()
-        acc.evaluate(y_true, y_pred)
+        accuracy_score = acc.evaluate(y_true, y_pred)
+        mlflow.log_metric("accuracy", accuracy_score)
         
         mse = MSE()
-        mse.evaluate(y_true, y_pred)
+        MSE_score = mse.evaluate(y_true, y_pred)
+        mlflow.log_metric("mse", MSE_score)
         
         rmse = RMSE()
-        rmse.evaluate(y_true, y_pred)
+        RMSE_score = rmse.evaluate(y_true, y_pred)
+        mlflow.log_metric("rmse", RMSE_score)
         
         logging.info("Evaluation complete!")
         logging.info("Accuracy Score: {}".format(acc))

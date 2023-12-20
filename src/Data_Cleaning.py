@@ -8,8 +8,6 @@ from sklearn.preprocessing import LabelEncoder
 
 class DataStrategy(ABC):
     """Abstract class for data ingestion strategy."""
-    def __init__(self, data_path: str) -> None:
-        self.data_path = data_path
 
     @abstractmethod
     def handle_data(self):
