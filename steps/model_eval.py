@@ -11,7 +11,7 @@ from zenml.client import Client
 experiment_tracker = Client().active_stack.experiment_tracker
 
 @step(experiment_tracker=experiment_tracker.name)
-def model_eval(X_test:pd.DataFrame, y_true: pd.DataFrame, model: ClassifierMixin)->None:
+def model_eval(X_test:pd.DataFrame, y_true: pd.DataFrame, model: ClassifierMixin):
     """This step evaluates the performance of a model.
         Args:
             X_test: Pandas DataFrame.
@@ -42,6 +42,8 @@ def model_eval(X_test:pd.DataFrame, y_true: pd.DataFrame, model: ClassifierMixin
         logging.info("Accuracy Score: {}".format(acc))
         logging.info("MSE: {}".format(mse))
         logging.info("RMSE: {}".format(rmse))
+        
+        return accuracy_score
         
     except Exception as e:
         logging.error("Error while evaluating model: {}".format(e))

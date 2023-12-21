@@ -21,6 +21,6 @@ def training_pipeline(data_path: str):
     X_train, X_test, y_train, y_test = train_and_test_split(X,y)
 
     model = train_model(X_train, y_train)
-    model_eval(X_test, y_test, model)
+    accuracy_score=model_eval(X_test, y_test, model)
     
     
