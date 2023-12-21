@@ -1,3 +1,4 @@
+import json
 import numpy as np
 import pandas as pd
 
@@ -22,6 +23,9 @@ from steps.model_train import train_model
 from steps.model_eval import model_eval
 
 
+from .utils import get_data_for_test
+
+
 docker_settings = DockerSettings(required_integrations=[MLFLOW])
 
 
@@ -29,6 +33,12 @@ class DeploymentTriggerConfig(BaseParameters):
     """Deployment trigger config."""
 
     min_accuracy: float = 0.5
+    
+    
+@step(enable_cache=False)
+def dynamic_importer()->str:
+    data = get_data_for_test()
+    return data
 
 @step
 def deployment_trigger(accuracy:float, config:DeploymentTriggerConfig):
@@ -59,8 +69,54 @@ class MLFlowDeploymentLoaderStepParameters(BaseParameters):
 def prediction_service_loader(
     pipeline_name: str,pipeline_step_name: str,running: bool = True,model_name: str = "model",)-> MLFlowDeploymentService:
     
-    pass
+    mlflow_model_deployer_component = MLFlowModelDeployer.get_active_model_deployer()
+    
+    existing_services = mlflow_model_deployer_component.find_model_server(
+        pipeline_name=pipeline_name,
+        pipeline_step_name=pipeline_step_name,
+        model_name=model_name,
+        running=running,
+    )
+    
+    if not existing_services:
+        raise RuntimeError(
+            f"No MLflow prediction service deployed by the "
+            f"{pipeline_step_name} step in the {pipeline_name} "
+            f"pipeline for the '{model_name}' model is currently "
+            f"running."
+        )
+        
+    print(existing_services)
+    print(type(existing_services))
+    return existing_services[0]
 
+
+@step
+def predictor(
+    service:MLFlowDeploymentService, data: str,)->np.ndarray:
+    """Predicts the output of the model deployed by the MLflow model deployer."""
+    
+    
+    service.start(timeout=10)
+    data = json.loads(data)
+    data.pop("columns")
+    data.pop("index")
+    
+    columns_for_df = [
+        "Survived",
+        "Pclass",
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+    ]
+    
+    df = pd.DataFrame(data["data"], columns=columns_for_df)
+    json_lst = json.loads(json.dumps(list(df.T.to_dict().values())))
+    data = np.array(json_lst)
+    prediction = service.predict(data)
+    return prediction
+    
 
 
 @pipeline(enable_cache=False, settings={"docker": docker_settings})
@@ -83,3 +139,14 @@ def continuous_deployment_pipeline(datapath: str,
                                timeout=timeout,)
     
     
+    
+@pipeline(enable_cache=False, settings={"docker": docker_settings})
+def inference_pipeline(pipeline_name: str, pipeline_step_name: str):
+    # Link all the steps artifacts together
+    batch_data = dynamic_importer()
+    model_deployment_service = prediction_service_loader(
+        pipeline_name=pipeline_name,
+        pipeline_step_name=pipeline_step_name,
+        running=False,
+    )
+    predictor(service=model_deployment_service, data=batch_data)

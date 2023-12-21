@@ -54,7 +54,8 @@ The project can only be executed with a ZenML stack that has an MLflow experimen
 `zenml experiment-tracker register mlflow_tracker --flavor=mlflow`<br>
 `zenml model-deployer register mlflow --flavor=mlflow`<br>
 `zenml stack register mlflow_stack -a default -o default -d mlflow -e mlflow_tracker --set`<br>
-
+`zenml run_deployment.py --config deploy` - To Deploy the Model<br>
+`zenml run_deployment.py --config predict` - To Predict the results from the Model<br>
 
 # Note:
 
