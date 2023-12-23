@@ -103,9 +103,9 @@ def predictor(
     data.pop("index")
     
     columns_for_df = [
-        "Survived",
         "Pclass",
         "Age",
+        "Sex",
         "SibSp",
         "Parch",
         "Fare",
